@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+YPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Bookstore</title>
     <style>
         /* Reset and Base Styles */
@@ -91,18 +91,6 @@
             opacity: 1;
         }
 
-        .banner-slide:nth-child(1) {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://source.unsplash.com/random/1200x600/?books,library');
-        }
-
-        .banner-slide:nth-child(2) {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://source.unsplash.com/random/1200x600/?reading,bookstore');
-        }
-
-        .banner-slide:nth-child(3) {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://source.unsplash.com/random/1200x600/?literature,writing');
-        }
-
         .banner-quote {
             font-size: 2.2rem;
             font-style: italic;
@@ -131,15 +119,17 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
+            gap: 10px;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
+            gap: 20px;
         }
 
         .nav-links li {
-            margin-left: 25px;
+            margin-left: 0;
         }
 
         .nav-links a {
@@ -147,10 +137,12 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
-        .nav-links a:hover {
+        .nav-links a.active {
             color: #fdbb2d;
+            text-decoration: underline;
         }
 
         .admin-controls {
@@ -210,6 +202,9 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
         }
 
         .book-card:hover {
@@ -226,6 +221,10 @@
 
         .book-info {
             padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
         }
 
         .book-title {
@@ -268,6 +267,7 @@
         .book-options {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
         }
 
         .option-btn {
@@ -278,7 +278,7 @@
             font-weight: 500;
             transition: background 0.3s;
             flex: 1;
-            margin: 0 5px;
+            margin: 0;
         }
 
         .standard-btn {
@@ -328,6 +328,10 @@
             align-items: center;
         }
 
+        .modal.show {
+            display: flex;
+        }
+
         .modal-content {
             background-color: white;
             padding: 30px;
@@ -363,7 +367,7 @@
             font-weight: 500;
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -495,6 +499,8 @@
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card:hover {
@@ -510,6 +516,7 @@
 
         .product-info {
             padding: 15px;
+            flex: 1;
         }
 
         .product-name {
@@ -574,10 +581,22 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1001;
             display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
         }
 
         .kill-switch.active {
-            display: block;
+            display: flex;
+        }
+
+        /* small screens */
+        @media (max-width: 600px) {
+            .title-container { height: 90px; }
+            .rotating-title { font-size: 2rem; }
+            .book-card { min-height: 380px; }
+            .banner-container { height: 260px; }
         }
     </style>
 </head>
@@ -590,16 +609,16 @@
     </header>
 
     <!-- Sliding Banner -->
-    <div class="banner-container">
-        <div class="banner-slide active">
+    <div class="banner-container" id="banner-container">
+        <div class="banner-slide active" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://source.unsplash.com/1200x600/?books,library')">
             <p class="banner-quote">"A room without books is like a body without a soul."</p>
             <p class="banner-author">- Marcus Tullius Cicero</p>
         </div>
-        <div class="banner-slide">
+        <div class="banner-slide" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://source.unsplash.com/1200x600/?reading,bookstore')">
             <p class="banner-quote">"There is no friend as loyal as a book."</p>
             <p class="banner-author">- Ernest Hemingway</p>
         </div>
-        <div class="banner-slide">
+        <div class="banner-slide" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://source.unsplash.com/1200x600/?literature,writing')">
             <p class="banner-quote">"Books are a uniquely portable magic."</p>
             <p class="banner-author">- Stephen King</p>
         </div>
@@ -609,14 +628,14 @@
     <nav>
         <div class="nav-container">
             <ul class="nav-links">
-                <li><a href="#" class="nav-link active" data-section="books">All Books</a></li>
-                <li><a href="#" class="nav-link" data-section="dark-romance">Dark Romance</a></li>
-                <li><a href="#" class="nav-link" data-section="thrillers">Thrillers</a></li>
-                <li><a href="#" class="nav-link" data-section="romance">Romance</a></li>
+                <li><a class="nav-link active" data-section="books">All Books</a></li>
+                <li><a class="nav-link" data-section="dark-romance">Dark Romance</a></li>
+                <li><a class="nav-link" data-section="thriller">Thrillers</a></li>
+                <li><a class="nav-link" data-section="romance">Romance</a></li>
             </ul>
             <div class="admin-controls">
                 <button class="admin-btn" id="admin-login">Admin Login</button>
-                <button class="admin-btn" id="kill-switch-btn" style="display: none;">Kill Switch</button>
+                <button class="admin-btn" id="kill-switch-btn" style="display: none;">Show Kill</button>
             </div>
         </div>
     </nav>
@@ -673,13 +692,13 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <p>&copy; 2023 Book Store. All rights reserved.</p>
+            <p>&copy; 2025 Book Store. All rights reserved.</p>
             <p>Your one-stop destination for all your reading needs.</p>
         </div>
     </footer>
 
     <!-- Admin Login Modal -->
-    <div class="modal" id="admin-modal">
+    <div class="modal" id="admin-modal" aria-hidden="true">
         <div class="modal-content">
             <span class="close-modal" id="close-admin-modal">&times;</span>
             <h2 class="modal-title">Admin Login</h2>
@@ -692,7 +711,7 @@
     </div>
 
     <!-- Premium Access Modal -->
-    <div class="modal" id="premium-modal">
+    <div class="modal" id="premium-modal" aria-hidden="true">
         <div class="modal-content">
             <span class="close-modal" id="close-premium-modal">&times;</span>
             <h2 class="modal-title">Premium Access</h2>
@@ -705,521 +724,375 @@
     </div>
 
     <!-- Kill Switch -->
-    <button class="kill-switch" id="kill-switch">KILL SWITCH</button>
+    <button class="kill-switch" id="kill-switch" title="Disable premium">KILL</button>
 
     <script>
-        // Sample book data
+        /******************************************************
+         * Fixed and complete script for the Bookstore page
+         ******************************************************/
+
+        // --- Data: 25 books (placeholder images seeded per id) ---
         const books = [
-            {
-                id: 1,
-                title: "Crimson Desire",
-                author: "Elena Blackwood",
-                genre: "dark-romance",
-                price: "$14.99",
-                description: "A dark tale of forbidden love and dangerous secrets in the aristocratic society of 19th century Europe.",
-                image: "book1.jpg"
-            },
-            {
-                id: 2,
-                title: "Midnight Shadows",
-                author: "James Holloway",
-                genre: "thriller",
-                {price: "$16.99",
-               description: "A psychological thriller that follows a detective's descent into madness while hunting a serial killer.",
-               image: "book2.jpg"
-},
-{
-    id: 3,
-    title: "Eternal Sunshine",
-    author: "Sarah Johnson",
-    genre: "romance",
-    price: "$12.99",
-    description: "A heartwarming story of second chances and the healing power of love in a small coastal town.",
-    image: "book3.jpg"
-},
-{
-    id: 4,
-    title: "Blood Ties",
-    author: "Victoria Night",
-    genre: "dark-romance",
-    price: "$15.99",
-    description: "A vampire romance that explores the thin line between love and obsession in the immortal world.",
-    image: "book4.jpg"
-},
-{
-    id: 5,
-    title: "The Silent Witness",
-    author: "Michael Peterson",
-    genre: "thriller",
-    price: "$17.99",
-    description: "A legal thriller about a lawyer who uncovers a conspiracy while defending an apparently guilty client.",
-    image: "book5.jpg"
-},
-{
-    id: 6,
-    title: "Hearts Entwined",
-    author: "Amanda Roberts",
-    genre: "romance",
-    price: "$13.99",
-    description: "Two strangers find love while competing in a baking competition that changes both their lives.",
-    image: "book6.jpg"
-},
-{
-    id: 7,
-    title: "Crimson Obsession",
-    author: "Raven Blackwood",
-    genre: "dark-romance",
-    price: "$15.49",
-    description: "A dangerous affair between a mafia boss and the daughter of his rival family.",
-    image: "book7.jpg"
-},
-{
-    id: 8,
-    title: "Vanishing Point",
-    author: "David Chen",
-    genre: "thriller",
-    price: "$16.79",
-    description: "A tech CEO disappears without a trace, leaving behind a trail of corporate secrets.",
-    image: "book8.jpg"
-},
-{
-    id: 9,
-    title: "Summer Love",
-    author: "Emily Wilson",
-    genre: "romance",
-    price: "$11.99",
-    description: "A summer vacation romance that turns into a lifelong commitment against all odds.",
-    image: "book9.jpg"
-},
-{
-    id: 10,
-    title: "Forbidden Desires",
-    author: "Isabella Rossi",
-    genre: "dark-romance",
-    price: "$14.99",
-    description: "A professor falls for her student in this tale of forbidden love and consequences.",
-    image: "book10.jpg"
-},
-{
-    id: 11,
-    title: "The Last Echo",
-    author: "Robert Hayes",
-    genre: "thriller",
-    price: "$18.49",
-    description: "An investigative journalist uncovers a government conspiracy that threatens his life.",
-    image: "book11.jpg"
-},
-{
-    id: 12,
-    title: "Love in Paris",
-    author: "Sophie Martin",
-    genre: "romance",
-    price: "$12.49",
-    description: "An American artist finds love and inspiration in the romantic streets of Paris.",
-    image: "book12.jpg"
-},
-{
-    id: 13,
-    title: "Darkest Hour",
-    author: "Lilith Vance",
-    genre: "dark-romance",
-    price: "$16.29",
-    description: "A captive falls in love with her kidnapper in this twisted tale of Stockholm syndrome.",
-    image: "book13.jpg"
-},
-{
-    id: 14,
-    title: "Fatal Trust",
-    author: "Brian Thompson",
-    genre: "thriller",
-    price: "$17.29",
-    description: "A financial advisor discovers his wealthy clients are involved in money laundering.",
-    image: "book14.jpg"
-},
-{
-    id: 15,
-    title: "The Wedding Planner",
-    author: "Jessica Adams",
-    genre: "romance",
-    price: "$13.29",
-    description: "A wedding planner falls for the groom's brother while organizing the perfect wedding.",
-    image: "book15.jpg"
-},
-{
-    id: 16,
-    title: "Savage Love",
-    author: "Damon Cross",
-    genre: "dark-romance",
-    price: "$15.79",
-    description: "A biker gang leader and a sheltered rich girl defy societal expectations for love.",
-    image: "book16.jpg"
-},
-{
-    id: 17,
-    title: "Deadly Games",
-    author: "Alex Morgan",
-    genre: "thriller",
-    price: "$16.99",
-    description: "A game developer creates a virtual reality game that starts killing real players.",
-    image: "book17.jpg"
-},
-{
-    id: 18,
-    title: "Second Chance",
-    author: "Rachel Green",
-    genre: "romance",
-    price: "$12.79",
-    description: "High school sweethearts reunite after 20 years and discover their love never faded.",
-    image: "book18.jpg"
-},
-{
-    id: 19,
-    title: "Twisted Affection",
-    author: "Natalie Storm",
-    genre: "dark-romance",
-    price: "$14.49",
-    description: "A psychiatrist becomes dangerously obsessed with her most mysterious patient.",
-    image: "book19.jpg"
-},
-{
-    id: 20,
-    title: "The Perfect Alibi",
-    author: "Kevin Richardson",
-    genre: "thriller",
-    price: "$18.99",
-    description: "A defense attorney discovers his client is guilty but has the perfect alibi.",
-    image: "book20.jpg"
-},
-{
-    id: 21,
-    title: "Country Hearts",
-    author: "Megan Taylor",
-    genre: "romance",
-    price: "$11.49",
-    description: "A city girl inherits a ranch and falls for the handsome cowboy next door.",
-    image: "book21.jpg"
-},
-{
-    id: 22,
-    title: "Blood Moon",
-    author: "Cassandra Blake",
-    genre: "dark-romance",
-    price: "$15.99",
-    description: "A werewolf romance where love battles against ancient pack traditions.",
-    image: "book22.jpg"
-},
-{
-    id: 23,
-    title: "Cold Case",
-    author: "Patrick O'Malley",
-    genre: "thriller",
-    price: "$17.49",
-    description: "A retired detective reopens a 30-year-old murder case that haunted his career.",
-    image: "book23.jpg"
-},
-{
-    id: 24,
-    title: "Office Romance",
-    author: "Lisa Cooper",
-    genre: "romance",
-    price: "$13.99",
-    description: "Two competitive coworkers are forced to collaborate and discover unexpected chemistry.",
-    image: "book24.jpg"
-},
-{
-    id: 25,
-    title: "Broken Vows",
-    author: "Sebastian Grey",
-    genre: "dark-romance",
-    price: "$16.49",
-    description: "An arranged marriage turns into a passionate but dangerous relationship.",
-    image: "book25.jpg"
-}
-];
+            { id: 1, title: "Crimson Desire", author: "Elena Blackwood", genre: "dark-romance", price: "$14.99", description: "A dark tale of forbidden love and dangerous secrets in the aristocratic society of 19th century Europe.", image: `https://picsum.photos/seed/book1/400/600` },
+            { id: 2, title: "Midnight Shadows", author: "James Holloway", genre: "thriller", price: "$16.99", description: "A psychological thriller that follows a detective's descent into madness while hunting a serial killer.", image: `https://picsum.photos/seed/book2/400/600` },
+            { id: 3, title: "Eternal Sunshine", author: "Sarah Johnson", genre: "romance", price: "$12.99", description: "A heartwarming story of second chances and the healing power of love in a small coastal town.", image: `https://picsum.photos/seed/book3/400/600` },
+            { id: 4, title: "Blood Ties", author: "Victoria Night", genre: "dark-romance", price: "$15.99", description: "A vampire romance that explores the thin line between love and obsession in the immortal world.", image: `https://picsum.photos/seed/book4/400/600` },
+            { id: 5, title: "The Silent Witness", author: "Michael Peterson", genre: "thriller", price: "$17.99", description: "A legal thriller about a lawyer who uncovers a conspiracy while defending an apparently guilty client.", image: `https://picsum.photos/seed/book5/400/600` },
+            { id: 6, title: "Hearts Entwined", author: "Amanda Roberts", genre: "romance", price: "$13.99", description: "Two strangers find love while competing in a baking competition that changes both their lives.", image: `https://picsum.photos/seed/book6/400/600` },
+            { id: 7, title: "Crimson Obsession", author: "Raven Blackwood", genre: "dark-romance", price: "$15.49", description: "A dangerous affair between a mafia boss and the daughter of his rival family.", image: `https://picsum.photos/seed/book7/400/600` },
+            { id: 8, title: "Vanishing Point", author: "David Chen", genre: "thriller", price: "$16.79", description: "A tech CEO disappears without a trace, leaving behind a trail of corporate secrets.", image: `https://picsum.photos/seed/book8/400/600` },
+            { id: 9, title: "Summer Love", author: "Emily Wilson", genre: "romance", price: "$11.99", description: "A summer vacation romance that turns into a lifelong commitment against all odds.", image: `https://picsum.photos/seed/book9/400/600` },
+            { id: 10, title: "Forbidden Desires", author: "Isabella Rossi", genre: "dark-romance", price: "$14.99", description: "A professor falls for her student in this tale of forbidden love and consequences.", image: `https://picsum.photos/seed/book10/400/600` },
+            { id: 11, title: "The Last Echo", author: "Robert Hayes", genre: "thriller", price: "$18.49", description: "An investigative journalist uncovers a government conspiracy that threatens his life.", image: `https://picsum.photos/seed/book11/400/600` },
+            { id: 12, title: "Love in Paris", author: "Sophie Martin", genre: "romance", price: "$12.49", description: "An American artist finds love and inspiration in the romantic streets of Paris.", image: `https://picsum.photos/seed/book12/400/600` },
+            { id: 13, title: "Darkest Hour", author: "Lilith Vance", genre: "dark-romance", price: "$16.29", description: "A captive falls in love with her kidnapper in this twisted tale of Stockholm syndrome.", image: `https://picsum.photos/seed/book13/400/600` },
+            { id: 14, title: "Fatal Trust", author: "Brian Thompson", genre: "thriller", price: "$17.29", description: "A financial advisor discovers his wealthy clients are involved in money laundering.", image: `https://picsum.photos/seed/book14/400/600` },
+            { id: 15, title: "The Wedding Planner", author: "Jessica Adams", genre: "romance", price: "$13.29", description: "A wedding planner falls for the groom's brother while organizing the perfect wedding.", image: `https://picsum.photos/seed/book15/400/600` },
+            { id: 16, title: "Savage Love", author: "Damon Cross", genre: "dark-romance", price: "$15.79", description: "A biker gang leader and a sheltered rich girl defy societal expectations for love.", image: `https://picsum.photos/seed/book16/400/600` },
+            { id: 17, title: "Deadly Games", author: "Alex Morgan", genre: "thriller", price: "$16.99", description: "A game developer creates a virtual reality game that starts killing real players.", image: `https://picsum.photos/seed/book17/400/600` },
+            { id: 18, title: "Second Chance", author: "Rachel Green", genre: "romance", price: "$12.79", description: "High school sweethearts reunite after 20 years and discover their love never faded.", image: `https://picsum.photos/seed/book18/400/600` },
+            { id: 19, title: "Twisted Affection", author: "Natalie Storm", genre: "dark-romance", price: "$14.49", description: "A psychiatrist becomes dangerously obsessed with her most mysterious patient.", image: `https://picsum.photos/seed/book19/400/600` },
+            { id: 20, title: "The Perfect Alibi", author: "Kevin Richardson", genre: "thriller", price: "$18.99", description: "A defense attorney discovers his client is guilty but has the perfect alibi.", image: `https://picsum.photos/seed/book20/400/600` },
+            { id: 21, title: "Country Hearts", author: "Megan Taylor", genre: "romance", price: "$11.49", description: "A city girl inherits a ranch and falls for the handsome cowboy next door.", image: `https://picsum.photos/seed/book21/400/600` },
+            { id: 22, title: "Blood Moon", author: "Cassandra Blake", genre: "dark-romance", price: "$15.99", description: "A werewolf romance where love battles against ancient pack traditions.", image: `https://picsum.photos/seed/book22/400/600` },
+            { id: 23, title: "Cold Case", author: "Patrick O'Malley", genre: "thriller", price: "$17.49", description: "A retired detective reopens a 30-year-old murder case that haunted his career.", image: `https://picsum.photos/seed/book23/400/600` },
+            { id: 24, title: "Office Romance", author: "Lisa Cooper", genre: "romance", price: "$13.99", description: "Two competitive coworkers are forced to collaborate and discover unexpected chemistry.", image: `https://picsum.photos/seed/book24/400/600` },
+            { id: 25, title: "Broken Vows", author: "Sebastian Grey", genre: "dark-romance", price: "$16.49", description: "An arranged marriage turns into a passionate but dangerous relationship.", image: `https://picsum.photos/seed/book25/400/600` }
+        ];
 
-// Sample product data for premium section
-const products = [
-    {
-        id: 1,
-        name: "Premium All-Purpose Flour",
-        price: "$8.99",
-        image: "flour1.jpg"
-    },
-    {
-        id: 2,
-        name: "Organic Whole Wheat Flour",
-        price: "$10.99",
-        image: "flour2.jpg"
-    },
-    {
-        id: 3,
-        name: "Smartphone X1",
-        price: "$299.99",
-        image: "phone1.jpg"
-    },
-    {
-        id: 4,
-        name: "Laptop Pro",
-        price: "$899.99",
-        image: "laptop1.jpg"
-    },
-    {
-        id: 5,
-        name: "Wireless Earbuds",
-        price: "$49.99",
-        image: "earbuds1.jpg"
-    },
-    {
-        id: 6,
-        name: "Smart Watch",
-        price: "$129.99",
-        image: "watch1.jpg"
-    }
-];
+        // Sample product data for premium section
+        const products = [
+            { id: 1, name: "Premium All-Purpose Flour", price: "$8.99", image: `https://picsum.photos/seed/product1/400/300` },
+            { id: 2, name: "Organic Whole Wheat Flour", price: "$10.99", image: `https://picsum.photos/seed/product2/400/300` },
+            { id: 3, name: "Smartphone X1", price: "$299.99", image: `https://picsum.photos/seed/product3/400/300` },
+            { id: 4, name: "Laptop Pro", price: "$899.99", image: `https://picsum.photos/seed/product4/400/300` },
+            { id: 5, name: "Wireless Earbuds", price: "$49.99", image: `https://picsum.photos/seed/product5/400/300` },
+            { id: 6, name: "Smart Watch", price: "$129.99", image: `https://picsum.photos/seed/product6/400/300` }
+        ];
 
-// Passwords (in a real application, these would be stored securely)
-const ADMIN_PASSWORD = "admin123";
-const PREMIUM_PASSWORD = "premium456";
+        // Passwords (for demo only)
+        const ADMIN_PASSWORD = "admin123";
+        const PREMIUM_PASSWORD = "premium456";
 
-// DOM Elements
-const booksGrid = document.getElementById('books-grid');
-const bookDetail = document.getElementById('book-detail');
-const premiumProducts = document.getElementById('premium-products');
-const booksSection = document.getElementById('books-section');
-const adminModal = document.getElementById('admin-modal');
-const premiumModal = document.getElementById('premium-modal');
-const killSwitchBtn = document.getElementById('kill-switch-btn');
-const killSwitch = document.getElementById('kill-switch');
-const adminLoginBtn = document.getElementById('admin-login');
-const closeAdminModal = document.getElementById('close-admin-modal');
-const closePremiumModal = document.getElementById('close-premium-modal');
-const adminSubmit = document.getElementById('admin-submit');
-const premiumSubmit = document.getElementById('premium-submit');
-const backToBooks = document.getElementById('back-to-books');
-const backFromPremium = document.getElementById('back-from-premium');
-const stkPushBtn = document.getElementById('stk-push');
-const navLinks = document.querySelectorAll('.nav-link');
+        // DOM Elements
+        const booksGrid = document.getElementById('books-grid');
+        const bookDetail = document.getElementById('book-detail');
+        const premiumProducts = document.getElementById('premium-products');
+        const booksSection = document.getElementById('books-section');
+        const adminModal = document.getElementById('admin-modal');
+        const premiumModal = document.getElementById('premium-modal');
+        const killSwitchBtn = document.getElementById('kill-switch-btn');
+        const killSwitch = document.getElementById('kill-switch');
+        const adminLoginBtn = document.getElementById('admin-login');
+        const closeAdminModal = document.getElementById('close-admin-modal');
+        const closePremiumModal = document.getElementById('close-premium-modal');
+        const adminSubmit = document.getElementById('admin-submit');
+        const premiumSubmit = document.getElementById('premium-submit');
+        const backToBooks = document.getElementById('back-to-books');
+        const backFromPremium = document.getElementById('back-from-premium');
+        const stkPushBtn = document.getElementById('stk-push');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-// State variables
-let isAdmin = false;
-let currentBookId = null;
+        // State variables
+        let isAdmin = false;
+        let currentBookId = null;
+        let premiumEnabled = true; // can be toggled by kill switch
 
-// Initialize the page
-function init() {
-    displayBooks(books);
-    setupEventListeners();
-    startBannerRotation();
-}
-
-// Display books in the grid
-function displayBooks(booksToShow) {
-    booksGrid.innerHTML = '';
-    
-    booksToShow.forEach(book => {
-        const bookCard = document.createElement('div');
-        bookCard.className = 'book-card';
-        bookCard.innerHTML = `
-            <div class="book-image" style="background-image: url('${book.image}')"></div>
-            <div class="book-info">
-                <h3 class="book-title">${book.title}</h3>
-                <p class="book-author">by ${book.author}</p>
-                <span class="book-genre ${getGenreClass(book.genre)}">${formatGenre(book.genre)}</span>
-                <div class="book-options">
-                    <button class="option-btn standard-btn" data-id="${book.id}">Standard</button>
-                    <button class="option-btn premium-btn" data-id="${book.id}">Premium</button>
-                </div>
-            </div>
-        `;
-        booksGrid.appendChild(bookCard);
-    });
-
-    // Add event listeners to the buttons
-    document.querySelectorAll('.standard-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const bookId = parseInt(e.target.getAttribute('data-id'));
-            showBookDetail(bookId);
-        });
-    });
-
-    document.querySelectorAll('.premium-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const bookId = parseInt(e.target.getAttribute('data-id'));
-            showPremiumModal(bookId);
-        });
-    });
-}
-
-// Get CSS class for genre
-function getGenreClass(genre) {
-    switch(genre) {
-        case 'dark-romance': return 'genre-dark-romance';
-        case 'thriller': return 'genre-thriller';
-        case 'romance': return 'genre-romance';
-        default: return '';
-    }
-}
-
-// Format genre for display
-function formatGenre(genre) {
-    return genre.split('-').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
-}
-
-// Show book detail page
-function showBookDetail(bookId) {
-    const book = books.find(b => b.id === bookId);
-    if (book) {
-        document.getElementById('detail-title').textContent = book.title;
-        document.getElementById('detail-author').textContent = by ${book.author};
-        document.getElementById('detail-price').textContent = book.price;
-        document.getElementById('detail-description').textContent = book.description;
-        document.getElementById('detail-image').style.backgroundImage = url('${book.image}');
-        
-        booksSection.style.display = 'none';
-        bookDetail.classList.add('active');
-        currentBookId = bookId;
-    }
-}
-
-// Show premium access modal
-function showPremiumModal(bookId) {
-    currentBookId = bookId;
-    premiumModal.style.display = 'flex';
-}
-
-// Show premium products page
-function showPremiumProducts() {
-    // Populate products grid
-    const productsGrid = document.getElementById('products-grid');
-    productsGrid.innerHTML = '';
-    
-    products.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        productCard.innerHTML = `
-            <div class="product-image" style="background-image: url('${product.image}')"></div>
-            <div class="product-info">
-                <h4 class="product-name">${product.name}</h4>
-                <p class="product-price">${product.price}</p>
-            </div>
-        `;
-        productsGrid.appendChild(productCard);
-    });
-    
-    booksSection.style.display = 'none';
-    bookDetail.classList.remove('active');
-    premiumProducts.classList.add('active');
-    premiumModal.style.display = 'none';
-}
-
-// Setup event listeners
-function setupEventListeners() {
-    // Admin login
-    adminLoginBtn.addEventListener('click', () => {
-        adminModal.style.display = 'flex';
-    });
-
-    closeAdminModal.addEventListener('click', () => {
-        adminModal.style.display = 'none';
-    });
-
-    adminSubmit.addEventListener('click', () => {
-        const password = document.getElementById('admin-password').value;
-        if (password === ADMIN_PASSWORD) {
-            isAdmin = true;
-            killSwitchBtn.style.display = 'block';
-            killSwitch.classList.add('active');
-            adminModal.style.display = 'none';
-            alert('Admin access granted');
-        } else {
-            alert('Incorrect password');
+        // Initialize the page
+        function init() {
+            displayBooks(books);
+            setupEventListeners();
+            startBannerRotation();
         }
-    });
 
-    // Premium access
-    closePremiumModal.addEventListener('click', () => {
-        premiumModal.style.display = 'none';
-    });
+        // Display books in the grid
+        function displayBooks(booksToShow) {
+            booksGrid.innerHTML = '';
 
-    premiumSubmit.addEventListener('click', () => {
-        const password = document.getElementById('premium-password').value;
-        if (password === PREMIUM_PASSWORD) {
-            showPremiumProducts();
-        } else {
-            alert('Incorrect password');
-        }
-    });
-
-    // Navigation
-    backToBooks.addEventListener('click', () => {
-        bookDetail.classList.remove('active');
-        booksSection.style.display = 'block';
-    });
-
-    backFromPremium.addEventListener('click', () => {
-        premiumProducts.classList.remove('active');
-        booksSection.style.display = 'block';
-    });
-
-    // STK Push simulation
-    stkPushBtn.addEventListener('click', () => {
-        const phone = document.getElementById('phone').value;
-        const location = document.getElementById('location').value;
-        
-        if (phone) {
-            alert(STK Push request sent to ${phone} for delivery from ${location});
-        } else {
-            alert('Please enter a phone number');
-        }
-    });
-
-    // Kill switch
-    killSwitch.addEventListener('click', () => {
-        if (confirm('Are you sure you want to activate the kill switch? This will disable the premium section.')) {
-            // In a real implementation, this would disable the premium functionality
-            alert('Kill switch activated. Premium section disabled.');
-            isAdmin = false;
-            killSwitchBtn.style.display = 'none';
-            killSwitch.classList.remove('active');
-        }
-    });
-
-    // Navigation filtering
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const section = e.target.getAttribute('data-section');
-            
-            // Update active nav link
-            navLinks.forEach(l => l.classList.remove('active'));
-            e.target.classList.add('active');
-            
-            // Filter books
-            if (section === 'books') {
-                displayBooks(books);
-            } else {
-                const filteredBooks = books.filter(book => book.genre === section);
-                displayBooks(filteredBooks);
+            if (!booksToShow || booksToShow.length === 0) {
+                booksGrid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; padding: 30px;">No books found.</p>';
+                return;
             }
-        });
-    });
-}
 
-// Banner rotation
-function startBannerRotation() {
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.banner-slide');
-    
-    setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 5000);
-}
+            booksToShow.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.innerHTML = `
+                    <div class="book-image" style="background-image: url('${book.image}')"></div>
+                    <div class="book-info">
+                        <div>
+                            <h3 class="book-title">${escapeHTML(book.title)}</h3>
+                            <p class="book-author">by ${escapeHTML(book.author)}</p>
+                            <span class="book-genre ${getGenreClass(book.genre)}">${formatGenre(book.genre)}</span>
+                        </div>
+                        <div class="book-options">
+                            <button class="option-btn standard-btn" data-id="${book.id}">Standard</button>
+                            <button class="option-btn premium-btn" data-id="${book.id}">Premium</button>
+                        </div>
+                    </div>
+                `;
+                booksGrid.appendChild(bookCard);
+            });
 
-// Initialize the application
-document.addEventListener('DOMContentLoaded', init);
-</script>
+            // Add event listeners to the buttons
+            document.querySelectorAll('.standard-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = parseInt(e.target.getAttribute('data-id'), 10);
+                    showBookDetail(bookId);
+                });
+            });
+
+            document.querySelectorAll('.premium-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = parseInt(e.target.getAttribute('data-id'), 10);
+                    if (!premiumEnabled) {
+                        alert('Premium section is currently disabled.');
+                        return;
+                    }
+                    showPremiumModal(bookId);
+                });
+            });
+        }
+
+        // Utility: simple escape for text inserted into HTML (small helper)
+        function escapeHTML(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Get CSS class for genre
+        function getGenreClass(genre) {
+            switch(genre) {
+                case 'dark-romance': return 'genre-dark-romance';
+                case 'thriller': return 'genre-thriller';
+                case 'romance': return 'genre-romance';
+                default: return '';
+            }
+        }
+
+        // Format genre for display
+        function formatGenre(genre) {
+            return genre.split('-').map(word =>
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        // Show book detail page
+        function showBookDetail(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                document.getElementById('detail-title').textContent = book.title;
+                document.getElementById('detail-author').textContent = `by ${book.author}`;
+                document.getElementById('detail-price').textContent = book.price;
+                document.getElementById('detail-description').textContent = book.description;
+                document.getElementById('detail-image').style.backgroundImage = `url('${book.image}')`;
+
+                booksSection.style.display = 'none';
+                premiumProducts.classList.remove('active');
+                bookDetail.classList.add('active');
+                currentBookId = bookId;
+            }
+        }
+
+        // Show premium access modal
+        function showPremiumModal(bookId) {
+            currentBookId = bookId;
+            premiumModal.classList.add('show');
+            premiumModal.setAttribute('aria-hidden', 'false');
+        }
+
+        // Show premium products page
+        function showPremiumProducts() {
+            // Populate products grid
+            const productsGrid = document.getElementById('products-grid');
+            productsGrid.innerHTML = '';
+
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image" style="background-image: url('${product.image}')"></div>
+                    <div class="product-info">
+                        <h4 class="product-name">${escapeHTML(product.name)}</h4>
+                        <p class="product-price">${escapeHTML(product.price)}</p>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+
+            booksSection.style.display = 'none';
+            bookDetail.classList.remove('active');
+            premiumProducts.classList.add('active');
+            premiumModal.classList.remove('show');
+            premiumModal.setAttribute('aria-hidden', 'true');
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Admin login
+            adminLoginBtn.addEventListener('click', () => {
+                adminModal.classList.add('show');
+                adminModal.setAttribute('aria-hidden', 'false');
+            });
+
+            closeAdminModal.addEventListener('click', () => {
+                adminModal.classList.remove('show');
+                adminModal.setAttribute('aria-hidden', 'true');
+            });
+
+            adminSubmit.addEventListener('click', () => {
+                const password = document.getElementById('admin-password').value;
+                if (password === ADMIN_PASSWORD) {
+                    isAdmin = true;
+                    killSwitchBtn.style.display = 'block';
+                    killSwitch.classList.add('active'); // show kill button for convenience
+                    adminModal.classList.remove('show');
+                    adminModal.setAttribute('aria-hidden', 'true');
+                    alert('Admin access granted');
+                } else {
+                    alert('Incorrect password');
+                }
+            });
+
+            // Admin's kill switch control (toggle visibility of the floating kill button)
+            killSwitchBtn.addEventListener('click', () => {
+                if (!isAdmin) {
+                    alert('Only admins can toggle the kill switch.');
+                    return;
+                }
+                killSwitch.classList.toggle('active');
+            });
+
+            // Premium access modal closing
+            closePremiumModal.addEventListener('click', () => {
+                premiumModal.classList.remove('show');
+                premiumModal.setAttribute('aria-hidden', 'true');
+            });
+
+            premiumSubmit.addEventListener('click', () => {
+                const password = document.getElementById('premium-password').value;
+                if (!premiumEnabled) {
+                    alert('Premium is currently disabled by admin.');
+                    premiumModal.classList.remove('show');
+                    premiumModal.setAttribute('aria-hidden', 'true');
+                    return;
+                }
+                if (password === PREMIUM_PASSWORD) {
+                    showPremiumProducts();
+                } else {
+                    alert('Incorrect password');
+                }
+            });
+
+            // Navigation: back buttons
+            backToBooks.addEventListener('click', () => {
+                bookDetail.classList.remove('active');
+                booksSection.style.display = 'block';
+                currentBookId = null;
+            });
+
+            backFromPremium.addEventListener('click', () => {
+                premiumProducts.classList.remove('active');
+                booksSection.style.display = 'block';
+            });
+
+            // STK Push simulation
+            stkPushBtn.addEventListener('click', () => {
+                const phone = document.getElementById('phone').value.trim();
+                const location = document.getElementById('location').value;
+                if (!premiumEnabled) {
+                    alert('Premium is currently disabled.');
+                    return;
+                }
+                if (phone) {
+                    alert(`STK Push request sent to ${phone} for delivery from ${location}`);
+                } else {
+                    alert('Please enter a phone number');
+                }
+            });
+
+            // Floating kill switch (actual effect: disables premium access)
+            killSwitch.addEventListener('click', () => {
+                if (!isAdmin) {
+                    alert('Only admins can activate the kill switch.');
+                    return;
+                }
+                if (confirm('Are you sure you want to activate the kill switch? This will disable the premium section.')) {
+                    premiumEnabled = false;
+                    killSwitch.classList.remove('active'); // hide floating button after activation
+                    killSwitchBtn.style.display = 'none';
+                    alert('Kill switch activated. Premium section disabled.');
+                }
+            });
+
+            // Navigation filtering by genre
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = e.target.getAttribute('data-section');
+
+                    // Update active nav link UI
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    // Filter books (note: books use 'thriller' not 'thrillers' so use matching keys)
+                    if (section === 'books') {
+                        displayBooks(books);
+                    } else {
+                        const filtered = books.filter(book => book.genre === section);
+                        displayBooks(filtered);
+                    }
+                });
+            });
+
+            // close modals by clicking outside content
+            window.addEventListener('click', (e) => {
+                if (e.target === adminModal) {
+                    adminModal.classList.remove('show');
+                    adminModal.setAttribute('aria-hidden', 'true');
+                } else if (e.target === premiumModal) {
+                    premiumModal.classList.remove('show');
+                    premiumModal.setAttribute('aria-hidden', 'true');
+                }
+            });
+
+            // keyboard escape to close modals
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (adminModal.classList.contains('show')) {
+                        adminModal.classList.remove('show');
+                        adminModal.setAttribute('aria-hidden', 'true');
+                    }
+                    if (premiumModal.classList.contains('show')) {
+                        premiumModal.classList.remove('show');
+                        premiumModal.setAttribute('aria-hidden', 'true');
+                    }
+                }
+            });
+        }
+
+        // Banner rotation
+        function startBannerRotation() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.banner-slide');
+
+            if (slides.length <= 1) return;
+
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000);
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
+
+
